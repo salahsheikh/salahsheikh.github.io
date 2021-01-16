@@ -1,0 +1,7 @@
+#define POST_TITLE "Static website generation using GCC and make"
+#define POST_DATE "30 May, 2020"
+
+<h2>Static website generation using GCC and make</h2>
+<div class="sectionblock">
+    <div class="blockcontent">No content just yet. Hello world!</div>
+</div>

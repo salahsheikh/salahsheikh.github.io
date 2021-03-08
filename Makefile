@@ -15,8 +15,7 @@ CORE_TEMPLATE_DEPENDENCIES = $(INC_DIR)/head.inc $(INC_DIR)/nav.inc $(TEMPLATES_
 production: $(MAIN_PAGES) $(TEMPLATE_POSTS_OUTPUT) docs/css/main.min.css
 	@mkdir -p docs
 	@mkdir -p docs/posts
-	./minify -o docs ./
-	./minify -o docs/posts ./posts
+	./minify -o ./docs ./docs
 
 docs/css/main.min.css: docs/css/main.css
 	./minify -o docs/css/main.min.css docs/css/main.css

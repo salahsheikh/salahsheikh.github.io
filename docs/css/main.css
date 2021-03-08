@@ -12,8 +12,8 @@ html {
 }
 
 body {
-    max-width: 60em;
-    margin: 0 auto;
+    max-width: 50em;
+    margin-left: 2%;
 }
 
 .wrapper {
@@ -55,6 +55,10 @@ body {
 
     .left-wrapper-logo {
       display: none;
+    }
+
+    body {
+        margin-left: auto;
     }
     
 }

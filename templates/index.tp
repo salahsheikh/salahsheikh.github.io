@@ -1,7 +1,9 @@
 <div class="infoblock">
     <div class="blockcontent">
         <p>I&#39;m a rising senior at the <a href="https://schulich.ucalgary.ca/electrical-computer">University of Calgary</a> majoring in Electrical Engineering.</p>
-        <p>I currently work at <a href="https://www.amd.com/en"  target="_blank">AMD</a> where I contribute to the kernel-mode driver targeting new GPUs. <br /> Previously, I interned at <a href="https://www.synopsys.com/"  target="_blank">Synopsys</a>.</p>
+        <p>I currently work at <a href="https://www.apple.com">Apple</a> in the Interactive Media Group.</p>
+        <p>Previously, I worked at <a href="https://www.amd.com/en"  target="_blank">AMD</a> where I contributed to the
+        kernel-mode driver targeting new GPUs. <br /> Before that, I interned at <a href="https://www.synopsys.com/"  target="_blank">Synopsys</a>.</p>
         <p>My interests include systems programming, HW-accelerated systems, and computer architecture.</p>
     </div>
 </div>

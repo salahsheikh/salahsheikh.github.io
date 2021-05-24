@@ -1,9 +1,0 @@
-#define POST_TITLE "Hello world!"
-#define POST_DATE "29 May, 2020"
-
-<h2>Hello world!</h2>
-<div class="sectionblock">
-    <div class="blockcontent">
-    No content just yet. Hello world!
-    </div>
-</div>

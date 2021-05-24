@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang=en>
+  <meta charset=utf-8>
+  <meta name=description content="I'm a student and developer studying Electrical Engineering with a minor in Computer Engineering at the University of Calgary.">
+  <meta property="og:image" content="/img/meta/meta.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://salahsheikh.me">
+  <meta name=keyword content="Salah, Sheikh, University, Calgary, Portfolio, Computer engineering, electrical engineering, website, Synopsys, AMD, Developer, Engineer, Software, 2021, intern">
+  <title>About</title>
+  <meta name=viewport content="width=device-width,height=device-height,initial-scale=1">
+  <link rel=stylesheet href=./css/main.css>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156816686-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','UA-156816686-1')</script>
+
+<body>
+  <div class=wrapper>
+    <div class=left-wrapper-logo></div>
+    <div class=right-wrapper><img class=img-header src=./img/header.svg alt="salah sheikh"></div>
+  </div>
+  <div class=wrapper>
+    <div class=left-wrapper>
+      <ul class=menu-list>
+        <li><a class=selected href=/index.html>about</a>
+      </ul>
+    </div>
+    <div class=right-wrapper>
+      <div class=main>
+        <div class=row>
+          <div class=column>
+          
+            <div class=infoblock>
+              <div class=blockcontent>
+                <p>I'm currently a Software Engineer Intern at <a href=https://www.apple.com>Apple</a>.
+                <p>Previously, I worked at <a href=https://www.amd.com/en target=_blank>AMD</a> where I contributed to the
+                  kernel-mode driver targeting new GPUs.<br>Before that, I interned at <a href=https://www.synopsys.com/ target=_blank>Synopsys</a>.
+                <p>I study Electrical Engineering at the <a href=https://schulich.ucalgary.ca/electrical-computer>University of Calgary</a>.
+                <p>My interests include systems programming, HW-accelerated systems, and computer architecture.
+              </div>
+            </div>
+            
+            <div class=sectionblock>
+              <div class=blockcontent>
+                <div class=alignblock>
+                  <div class=left-grow>salah.h.sheikh [at sign] gmail [dot] com</div>
+                  <div class="right right-align"><a href=https://www.linkedin.com/in/salahsheikh/ target=_blank>LinkedIn</a>
+                    <a style=margin-left:3px href=https://github.com/salahsheikh/ target=_blank>GitHub</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class=sectionblock>
+              <div class="blockcontent no-padding">
+                <canvas id="mandelbrot"></canvas>
+              </div>
+            </div>
+            
+          </div>
+          <div class="column">
+
+<!--            <div class=sectionblock>
+              <div class="blockcontent no-padding">
+                <canvas id="cube"></canvas>
+              </div>
+            </div>-->
+          
+          </div>
+        </div>
+        
+      </div>
+    </div>
+     
+</div>
+<script>
+// MIT License
+// 
+// Copyright (c) 2021 Salah Sheikh
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+document.addEventListener("DOMContentLoaded", function(event) { 
+    var canvas = document.getElementById("mandelbrot");
+    var gl = canvas.getContext("webgl", {antialias: false});
+    
+    const vertex_shader = 
+`
+attribute vec2 position;
+void main() { gl_Position = vec4(position, 0, 1); }
+`;
+    
+    const fragment_shader = 
+`
+uniform highp vec2 resolution;
+uniform highp float time;
+
+#define THRESHOLD 4.
+#define N         128
+#define SAMPLES   4. /* 4X MSAA */
+
+highp vec3 mandelbrot(vec2 p)
+{    
+	highp vec2 z = vec2(0);  
+    highp vec3 color = vec3(0);
+	for (int i = 0; i < N; ++i) {  
+		z = vec2(z.x * z.x - z.y * z.y, z.y * z.x * 2.) + p; 
+
+		if (length(z) > THRESHOLD) {
+            highp float sample = float(i) - log(log(length(z)) / log(THRESHOLD)) / log(2.);
+			return 0.5 * (1. + cos(2.5 + sample / 6. + vec3(0.05, 0.5, 1.0)));
+		}
+	}
+	
+	return color;
+}
+
+lowp float sigmoid(in float x, in float translation) {
+    return 1. / (1. + exp(-x + translation));
+}
+
+void main() {
+    highp vec3 final_color = vec3(0);
+    highp vec2 R = resolution.xy;
+    // "Soft" zoom
+    lowp float time_adj = mod(time, 30.);
+    lowp float zoom_factor = 1. + sigmoid(time_adj, 2.5) + sigmoid(time_adj, 5.) + sigmoid(time_adj, 7.5) + sigmoid(time_adj, 8.) * time_adj;
+    for (highp float j = 0.; j < SAMPLES; j++) {
+        for (highp float i = 0.; i < SAMPLES; i++) {
+            highp vec2 uv = (2. * (gl_FragCoord.xy + vec2(i, j) / SAMPLES) - R) / R.y 
+                            / zoom_factor 
+                            - vec2(1.4 + 0.01*zoom_factor, 0); // Off-set to center zoom on leftmost bulbs
+            final_color += mandelbrot(uv);
+        }
+    }
+    final_color /= (SAMPLES * SAMPLES);
+    gl_FragColor = vec4(final_color, 1);
+}
+    `;
+    
+    function compile_shader(gl, shader_type, shader_source) 
+    {
+        var shader = gl.createShader(shader_type);
+        gl.shaderSource(shader, shader_source);
+        gl.compileShader(shader);
+        return shader;
+    }
+    
+    function create_program(vertex_shader, fragment_shader) {
+        var program_id = gl.createProgram();
+        gl.attachShader(program_id, compile_shader(gl, gl.VERTEX_SHADER, vertex_shader));
+        gl.attachShader(program_id, compile_shader(gl, gl.FRAGMENT_SHADER, fragment_shader));
+        gl.linkProgram(program_id);
+        return program_id;
+    }
+    
+    const program_id = create_program(vertex_shader, fragment_shader);
+    gl.useProgram(program_id);
+    const position_attrib_loc = gl.getAttribLocation(program_id, "position");
+    gl.enableVertexAttribArray(position_attrib_loc);
+    
+    const time_uniform_loc = gl.getUniformLocation(program_id, "time");
+    
+    const resolution_uniform_loc = gl.getUniformLocation(program_id, "resolution");
+    gl.uniform2f(resolution_uniform_loc, canvas.width, canvas.height);
+
+    
+    function initialize() {
+        // Rectangle made up of triangle prims
+        const buffer_data = [
+            -1, -1,
+             1, -1,
+             1,  1, 
+            
+            -1,  1,
+             1,  1,
+            -1, -1
+        ];
+
+        const buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(buffer_data), gl.STATIC_DRAW);
+    }
+
+    function draw(ts) 
+    {
+        if (canvas.width != canvas.clientWidth || canvas.height != canvas.clientHeight) {
+            const {width, height} = canvas.getBoundingClientRect();
+            canvas.width = width;
+            canvas.height = height;
+            gl.viewport(0, 0, canvas.width, canvas.height);
+            gl.uniform2f(resolution_uniform_loc, canvas.width, canvas.height);
+        }
+        
+        gl.clearColor(0, 0, 0, 1);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        
+        gl.useProgram(program_id);
+        
+        gl.uniform1f(time_uniform_loc, ts / 5000.);
+        
+        // Cover entire rendering context area with two triangles
+        gl.vertexAttribPointer(position_attrib_loc, 2, gl.FLOAT, false, 0, 0);
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+        
+        window.requestAnimationFrame(draw);
+    }
+
+    initialize();
+    window.requestAnimationFrame(draw);
+});
+</script>
+</body>

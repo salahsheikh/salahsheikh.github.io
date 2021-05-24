@@ -94,7 +94,8 @@
 // SOFTWARE.
 document.addEventListener("DOMContentLoaded", function(event) { 
     var canvas = document.getElementById("mandelbrot");
-    var gl = canvas.getContext("experimental-webgl", {antialias: false});
+    var gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+    if (!gl) return;
     experimental = true;
     
     const vertex_shader = 

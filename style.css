@@ -9,8 +9,14 @@ body {
     margin: 0;
     background: #f2f7f8;
     font-family: serif;
-    max-width: 800px;
+    max-width: 80ch;
     font-size: 11pt;
+}
+
+p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 p:not(:last-child) {
@@ -23,6 +29,7 @@ a {
 
 section {
     margin-left: 3vw;
+    margin-right: 3vw;
 }
 
 body > section:first-child {

@@ -1,0 +1,51 @@
+@font-face {
+    font-family: "LastikFree";
+    src: url("assets/lastik-free.otf");
+}
+
+body {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background: #f2f7f8;
+    font-family: serif;
+    max-width: 800px;
+    font-size: 11pt;
+}
+
+p:not(:last-child) {
+    margin-bottom: 6px;
+}
+
+a {
+    color: #5967b1;
+}
+
+section {
+    margin-left: 3vw;
+}
+
+body > section:first-child {
+    margin-top: 3vh;
+}
+
+section.header {
+    user-select: none;
+    font-family: "LastikFree";
+    margin-bottom: 1vh;
+}
+
+section.header > h1 {
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    line-height: 1.1em;
+    text-decoration: none;
+    font-size: 16pt;
+}
+
+section.footer > img {
+    margin-top: 3vh;
+    transform: rotateY(180deg);
+    max-height: 20vh;
+}

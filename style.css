@@ -63,4 +63,5 @@ section.footer > img {
     -moz-user-select: none;
     -webkit-user-drag: none;
     -webkit-user-select: none;
+    content-visibility: auto;
 }

@@ -11,11 +11,17 @@ body {
 
 body {
     padding: clamp(1rem, 2vw, 3rem);
-    color: #000000e1;
-    background: #edf3f8;
+    background: #7C8658;
+    color: #3A4A3D;
     font-family: serif;
     max-width: 80ch;
     font-size: 11pt;
+}
+
+section {
+    background: #AEB68A;
+    padding: 7px;
+    border: 1px solid #8F9960;     
 }
 
 p {
@@ -41,27 +47,11 @@ section + section {
 }
 
 a {
-    color: #2e5576;
+    color: #3A4A3F;
     text-decoration: none;
     font-weight: bold;
 }
 
 a:hover {
-    color: #213d54;
-}
-
-section.footer > img {
-    transform: rotateY(180deg);
-    width: 100%;
-    width: -moz-available;
-    width: -webkit-fill-available;
-    width: stretch;
-    display: block;
-    border: 1px solid #abc7de;
-    user-select: none;
-    -drag: none;
-    -moz-user-select: none;
-    -webkit-user-drag: none;
-    -webkit-user-select: none;
-    content-visibility: auto;
+    color: #4F6A63;
 }

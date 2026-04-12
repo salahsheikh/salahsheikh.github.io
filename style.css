@@ -11,17 +11,19 @@ body {
 
 body {
     padding: clamp(1rem, 2vw, 3rem);
-    background: #7C8658;
-    color: #3A4A3D;
+    background: #fffef2;
+    color: #333;
+    direction: ltr;
     font-family: serif;
     max-width: 80ch;
     font-size: 11pt;
 }
 
 section {
-    background: #AEB68A;
     padding: 7px;
-    border: 1px solid #8F9960;     
+    background-color: rgba(51, 51, 51, 1);
+    color: rgba(255, 254, 242, 1);
+    border: 1px solid rgb(from currentColor r g b / 0.5);    
 }
 
 p {
@@ -47,11 +49,11 @@ section + section {
 }
 
 a {
-    color: #3A4A3F;
+    color: rgb(from currentColor r g b / 0.65);    
     text-decoration: none;
     font-weight: bold;
 }
 
 a:hover {
-    color: #4F6A63;
+    color: rgb(from currentColor r g b / 0.35);
 }

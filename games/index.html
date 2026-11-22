@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#fffef2">
+    <title>Games for two</title>
+    <link rel="stylesheet" href="../ress.min.css">
+    <link rel="stylesheet" href="games.css">
+    <script src="games.js" defer></script>
+</head>
+<body>
+<main class="page"><section class="box paper">
+    <noscript>These games need JavaScript to run.</noscript>
+    <nav aria-label="Games">
+        <button type="button" data-game="wordle" aria-pressed="true">Wordle</button>
+        <button type="button" data-game="connections" aria-pressed="false">Connections</button>
+        <span class="heart" aria-hidden="true">♡</span>
+    </nav>
+    <div id="wordle">
+
+        <form id="wordle-setup">
+            <label for="wordle-answer">Secret word</label>
+            <input id="wordle-answer" type="password" required pattern="[A-Za-z]{5}" minlength="5" maxlength="5" autocomplete="off" autocapitalize="none" spellcheck="false">
+            <div class="actions"><button type="submit">Start puzzle</button></div>
+        </form>
+        <div id="wordle-play" hidden>
+            <div id="wordle-board" class="word-board" role="group" aria-label="Guesses"></div>
+            <p id="wordle-status" class="status" role="status" aria-live="polite"></p>
+            <p id="wordle-feedback" class="sr-only" role="status" aria-live="polite"></p>
+            <div id="wordle-keyboard" class="keyboard" role="group" aria-label="Letter keyboard"></div>
+            <div class="actions"><button id="wordle-new" type="button">New puzzle</button></div>
+        </div>
+    </div>
+    <div id="connections" hidden>
+
+        <form id="connections-setup">
+            <div id="connections-groups"></div>
+            <p id="connections-setup-status" role="alert"></p>
+            <div class="actions"><button type="submit">Start puzzle</button></div>
+        </form>
+        <div id="connections-play" hidden>
+            <div id="connections-solved" aria-label="Solved groups"></div>
+            <div id="connections-tiles" class="tiles" role="group" aria-label="Words"></div>
+            <p id="connections-mistakes"></p>
+            <p id="connections-status" class="status" role="status" aria-live="polite"></p>
+            <div class="actions">
+                <button id="connections-shuffle" type="button">Shuffle</button>
+                <button id="connections-deselect" type="button">Deselect all</button>
+                <button id="connections-submit" type="button" disabled>Submit</button>
+            </div>
+            <div class="actions"><button id="connections-new" type="button">New puzzle</button></div>
+        </div>
+    </div>
+</section></main>
+</body>
+</html>

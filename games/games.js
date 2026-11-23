@@ -190,21 +190,19 @@ function initConnections() {
     fieldset.append(legend);
     var wordInputs = document.createElement('div');
     wordInputs.className = 'word-inputs';
-    for (var field = 0; field < 5; field++) {
+    for (var field = 1; field <= 4; field++) {
       var id = "connections-group-".concat(group, "-").concat(field);
       var label = document.createElement('label');
       label.htmlFor = id;
-      label.textContent = field === 0 ? 'Category' : "Word ".concat(field);
+      label.textContent = "Word ".concat(field);
       var input = document.createElement('input');
       input.id = id;
       input.required = true;
-      input.maxLength = field === 0 ? 100 : 40;
+      input.maxLength = 40;
       input.autocomplete = 'off';
-      if (field === 0) fieldset.append(label, input);else {
-        var entry = document.createElement('div');
-        entry.append(label, input);
-        wordInputs.append(entry);
-      }
+      var entry = document.createElement('div');
+      entry.append(label, input);
+      wordInputs.append(entry);
     }
     fieldset.append(wordInputs);
     document.querySelector('#connections-groups').append(fieldset);
@@ -227,45 +225,34 @@ function initConnections() {
       button.setAttribute('aria-pressed', String(selected.has(word.id)));
       button.addEventListener('click', () => {
         if (finished) return;
-        if (selected.has(word.id)) selected.delete(word.id);else if (selected.size < 4) selected.add(word.id);else {
-          status.textContent = 'Deselect a word to choose another.';
-          return;
-        }
+        if (selected.has(word.id)) selected.delete(word.id);else if (selected.size < 4) selected.add(word.id);else return;
         button.setAttribute('aria-pressed', String(selected.has(word.id)));
         submit.disabled = selected.size !== 4;
         status.textContent = '';
       });
       tiles.append(button);
     });
-    document.querySelector('#connections-mistakes').textContent = "Mistakes remaining: ".concat(4 - mistakes);
+    document.querySelector('#connections-mistakes').textContent = "Mistakes left: ".concat(4 - mistakes);
     submit.disabled = finished || selected.size !== 4;
     document.querySelector('#connections-shuffle').disabled = finished;
     document.querySelector('#connections-deselect').disabled = finished;
   }
   function reveal(groupIndex) {
-    var group = groups[groupIndex];
     var row = document.createElement('div');
     row.className = "group group-".concat(groupIndex);
-    var label = document.createElement('strong');
-    label.textContent = group.name;
-    var list = document.createElement('span');
-    list.textContent = group.words.join(' · ');
-    row.append(label, list);
+    row.textContent = groups[groupIndex].join(' · ');
     solved.append(row);
   }
   setup.addEventListener('submit', event => {
     event.preventDefault();
     var next = Array.from({
       length: 4
-    }, (_, group) => ({
-      name: document.querySelector("#connections-group-".concat(group, "-0")).value.trim(),
-      words: Array.from({
-        length: 4
-      }, (_, i) => document.querySelector("#connections-group-".concat(group, "-").concat(i + 1)).value.trim())
-    }));
-    var all = next.flatMap(group => group.words.map(word => word.toLocaleLowerCase().normalize('NFKC')));
-    if (next.some(group => !group.name || group.words.some(word => !word))) {
-      document.querySelector('#connections-setup-status').textContent = 'Fill in every category and word.';
+    }, (_, group) => Array.from({
+      length: 4
+    }, (_, i) => document.querySelector("#connections-group-".concat(group, "-").concat(i + 1)).value.trim()));
+    var all = next.flatMap(group => group.map(word => word.toLocaleLowerCase().normalize('NFKC')));
+    if (next.some(group => group.some(word => !word))) {
+      document.querySelector('#connections-setup-status').textContent = 'Fill in every word.';
       return;
     }
     if (new Set(all).size !== 16) {
@@ -273,7 +260,7 @@ function initConnections() {
       return;
     }
     groups = next;
-    words = groups.flatMap((group, g) => group.words.map((text, i) => ({
+    words = groups.flatMap((group, g) => group.map((text, i) => ({
       text,
       group: g,
       id: g * 4 + i
@@ -296,10 +283,7 @@ function initConnections() {
   submit.addEventListener('click', () => {
     if (finished || selected.size !== 4) return;
     var signature = [...selected].sort((a, b) => a - b).join(',');
-    if (attempted.has(signature)) {
-      status.textContent = 'You already tried that group.';
-      return;
-    }
+    if (attempted.has(signature)) return;
     attempted.add(signature);
     var choice = words.filter(word => selected.has(word.id));
     var counts = groups.map((_, i) => choice.filter(word => word.group === i).length);
@@ -309,17 +293,14 @@ function initConnections() {
       reveal(match);
       words = words.filter(word => word.group !== match);
       selected.clear();
-      status.textContent = 'Group found.';
-      if (found.size === 4) {
-        finished = true;
-        status.textContent = 'You found all four connections!';
-      }
+      status.textContent = '';
+      finished = found.size === 4;
     } else {
       mistakes++;
-      status.textContent = counts.includes(3) ? 'One away.' : 'Those words don’t share a group.';
+      status.textContent = counts.includes(3) ? 'One away.' : '';
       if (mistakes === 4) {
         finished = true;
-        status.textContent = 'No mistakes remaining. Here are the connections.';
+        status.textContent = '';
         groups.forEach((_, i) => {
           if (!found.has(i)) reveal(i);
         });
@@ -351,7 +332,7 @@ function initConnections() {
     status.textContent = '';
     play.hidden = true;
     setup.hidden = false;
-    document.querySelector('#connections-group-0-0').focus();
+    document.querySelector('#connections-group-0-1').focus();
   });
 }
 initWordle();

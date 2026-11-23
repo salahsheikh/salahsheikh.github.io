@@ -46,7 +46,6 @@ legend { padding: 0 .25rem; }
 .tile:nth-child(4n) { transform: rotate(1deg); }
 .tile[aria-pressed="true"] { transform: none; }
 .group { padding: var(--space); margin: 4px 0; text-align: center; overflow-wrap: anywhere; color: var(--ink); border: 1px dotted var(--line); }
-.group strong { display: block; }
 .group-0 { background: #e5d890; }
 .group-1 { background: #aeb68a; color: #2f3b31; }
 .group-2 { background: #edf3f8; color: #2e5576; }
